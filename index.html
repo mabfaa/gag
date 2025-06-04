@@ -19,10 +19,18 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             overflow: hidden;
+            display: flex; /* Added for flex layout */
+            flex-direction: column; /* Stack items vertically */
         }
         .card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .card-content-wrapper { /* New wrapper for content inside card */
+            padding: 1.5rem; /* p-6 */
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
         .price-tag {
             background-color: #facc15; /* Yellow-500 */
@@ -59,9 +67,8 @@
             object-fit: contain;
             border-radius: 8px;
         }
-        .buy-button-link {
+        .buy-button-link, .action-button-styled-as-link {
             display: block;
-            background-color: #65a30d; /* Lime-600 */
             color: white;
             font-weight: 600;
             padding: 10px 20px;
@@ -69,6 +76,10 @@
             transition: background-color 0.3s ease;
             text-align: center;
             text-decoration: none;
+            margin-top: auto; /* Push button to the bottom */
+        }
+        .buy-button-link {
+             background-color: #65a30d; /* Lime-600 */
         }
         .buy-button-link:hover {
             background-color: #4d7c0f; /* Lime-700 */
@@ -83,6 +94,7 @@
             transition: background-color 0.3s ease;
             text-align: center;
             text-decoration: none;
+            margin-top: auto;
         }
         .promo-button-link:hover {
             background-color: #dc2626; /* Red-600 */
@@ -92,7 +104,7 @@
             height: 50px;
             margin-right: 10px;
         }
-        .action-button { /* General class for action buttons */
+        .action-button {
             display: inline-block;
             color: white;
             font-weight: 600;
@@ -115,33 +127,44 @@
         .back-button:hover {
             background-color: #4b5563; /* Gray-600 */
         }
-        .item-category-card {
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+        .item-category-card, .pet-op-detail-card, .pet-langka-detail-card, .pet-level-detail-card {
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.1);
             text-align: center;
+            display: flex;
+            flex-direction: column;
         }
-        .item-category-card img {
-            width: 100px; /* Adjust as needed */
-            height: 100px; /* Adjust as needed */
-            object-fit: contain; /* Changed to contain for these specific images */
+        .item-category-card img, .pet-op-detail-card .item-image, .pet-langka-detail-card .item-image, .pet-level-detail-card .item-image {
+            width: 100px; /* Default for category icons */
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            align-self: center;
+        }
+         .pet-op-detail-card .item-image, .pet-langka-detail-card .item-image, .pet-level-detail-card .item-image { /* This will also apply to titan pet details */
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
             margin-bottom: 1rem;
         }
+        .item-category-card .buy-button-link, .item-category-card .action-button-styled-as-link,
+        .pet-op-detail-card .buy-button-link, .pet-langka-detail-card .buy-button-link, .pet-level-detail-card .buy-button-link {
+            margin-top: auto;
+        }
         .payment-methods-section {
-            /* background-color: rgba(255, 255, 255, 0.85); Removed background */
-            padding: 20px; /* Kept padding for spacing */
-            border-radius: 12px; /* Kept border-radius for consistency if a border is added later */
+            padding: 20px;
+            border-radius: 12px;
             margin-top: 30px;
             text-align: center;
-            /* box-shadow: 0 8px 16px rgba(0,0,0,0.1); Removed shadow */
         }
         .payment-methods-section h3 {
-            color: #ffffff; /* Changed to white for visibility on gradient */
+            color: #ffffff;
             font-size: 1.75rem; /* text-2xl */
             font-weight: 700;
             margin-bottom: 1rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* Optional: slight text shadow for better readability */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
         .payment-methods-list {
             display: flex;
@@ -152,15 +175,14 @@
             padding: 0;
         }
         .payment-methods-list li {
-            background-color: rgba(255, 255, 255, 0.2); /* Lighter, more transparent background for tags */
-            color: #ffffff; /* White text for tags */
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
             padding: 8px 16px;
-            border-radius: 20px; /* Pill shape */
+            border-radius: 20px;
             font-size: 0.875rem; /* text-sm */
             font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Optional: subtle border */
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        /* Tailwind's 'hidden' class is display: none !important; */
     </style>
 </head>
 <body class="gradient-background min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
@@ -169,7 +191,6 @@
 
         <!-- Pet Specials Content (Initially Visible) -->
         <div id="petSpecialsContent">
-            <!-- Header -->
             <header class="mb-10 text-center">
                 <div class="inline-flex items-center bg-white p-4 rounded-xl shadow-lg">
                     <svg class="header-icon text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -179,37 +200,30 @@
                 </div>
                 <p class="text-white text-lg mt-4">Dapatkan pet lucu dan Spesial untuk menemani kebunmu!</p>
             </header>
-
-            <!-- Price List Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                <!-- Raccoon Card -->
-                <div class="card flex flex-col">
+                <div class="card">
                     <img src="image_a38bfb.png" alt="Gambar Pet Rakun" class="item-image" onerror="this.src='https://placehold.co/600x400/cccccc/444444?text=Gambar+Rakun+Tidak+Tersedia'">
-                    <div class="p-6 flex flex-col flex-grow">
+                    <div class="card-content-wrapper">
                         <h2 class="text-2xl font-bold text-green-700 mb-2">Pet Raccoon</h2>
                         <p class="text-gray-600 mb-4 text-sm flex-grow">Raccoon yang didapat ukuran dan levelnya random!! apabila ingin request umur dan berat, tanya terlebih dahulu!</p>
                         <div class="flex items-center justify-between mb-4">
                             <span class="price-tag">Rp 80.000</span>
                         </div>
-                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20untuk%20membeli%20Pet%20Rakun%20(Rp%2080.000)%20dari%20Grow%20a%20Garden." target="_blank" class="buy-button-link mt-auto">Beli Sekarang</a>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20untuk%20membeli%20Pet%20Raccoon%20(Rp%2080.000)%20dari%20Grow%20a%20Garden." target="_blank" class="buy-button-link">Beli Sekarang</a>
                     </div>
                 </div>
-
-                <!-- Dragonfly Card -->
-                <div class="card flex flex-col">
+                <div class="card">
                     <img src="image_a38c73.jpg" alt="Gambar Pet Capung" class="item-image" onerror="this.src='https://placehold.co/600x400/cccccc/444444?text=Gambar+Capung+Tidak+Tersedia'">
-                    <div class="p-6 flex flex-col flex-grow">
+                    <div class="card-content-wrapper">
                         <h2 class="text-2xl font-bold text-green-700 mb-2">Pet Dragon Fly</h2>
                         <p class="text-gray-600 mb-4 text-sm flex-grow">Dragon Fly yang didapat ukuran dan levelnya random!! apabila ingin request umur dan berat, tanya terlebih dahulu!</p>
                         <div class="flex items-center justify-between mb-4">
                             <span class="price-tag">Rp 75.000</span>
                         </div>
-                         <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20untuk%20membeli%20Pet%20Capung%20(Rp%2075.000)%20dari%20Grow%20a%20Garden." target="_blank" class="buy-button-link mt-auto">Beli Sekarang</a>
+                         <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20untuk%20membeli%20Pet%20Dragon%20Fly%20(Rp%2075.000)%20dari%20Grow%20a%20Garden." target="_blank" class="buy-button-link">Beli Sekarang</a>
                     </div>
                 </div>
-
-                <!-- Bundle Deal Card -->
-                <div class="card md:col-span-2 lg:col-span-1 border-4 border-yellow-400 relative flex flex-col">
+                <div class="card md:col-span-2 lg:col-span-1 border-4 border-yellow-400 relative">
                     <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
                         PROMO SPESIAL!
                     </div>
@@ -217,7 +231,7 @@
                         <img src="image_a38bfb.png" alt="Gambar Pet Rakun dalam Paket" class="bundle-item-image" onerror="this.src='https://placehold.co/300x200/cccccc/444444?text=Rakun'">
                         <img src="image_a38c73.jpg" alt="Gambar Pet Capung dalam Paket" class="bundle-item-image" onerror="this.src='https://placehold.co/300x200/cccccc/444444?text=Capung'">
                     </div>
-                    <div class="p-6 flex flex-col flex-grow">
+                    <div class="card-content-wrapper">
                         <h2 class="text-2xl font-bold text-red-600 mb-2">Paket Duo Pet Hemat</h2>
                         <p class="text-gray-600 mb-4 text-sm flex-grow">Beli 2 pet sekaligus (Raccooon & Dragon Fly, atau 2 jenis sama) dengan harga spesial!</p>
                         <div class="flex items-center justify-between mb-2">
@@ -226,12 +240,10 @@
                         <div class="mb-4">
                             <span class="bonus-tag">BONUS: 200 Bilion!!</span>
                         </div>
-                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20untuk%20mengambil%20Promo%20Paket%20Duo%20Pet%20Hemat%20(Rp%20150.000%20%2B%20Bonus)%20dari%20Grow%20a%20Garden." target="_blank" class="promo-button-link mt-auto">Ambil Promo!</a>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20untuk%20mengambil%20Promo%20Paket%20Duo%20Pet%20Hemat%20(Rp%20150.000%20%2B%20Bonus)%20dari%20Grow%20a%20Garden." target="_blank" class="promo-button-link">Ambil Promo!</a>
                     </div>
                 </div>
             </div>
-
-            <!-- Section for Other Items Link -->
             <section class="mt-12 text-center">
                 <h2 class="text-3xl font-bold text-white mb-6">Cari Item Lain?</h2>
                 <p class="text-white text-lg mb-6">Temukan lebih banyak pet langka, buah-buahan spesial, dan item eksklusif lainnya di sini!</p>
@@ -242,47 +254,39 @@
                     </svg>
                 </button>
             </section>
-        </div> <!-- End of petSpecialsContent -->
+        </div>
 
-        <!-- Other Items Landing Page Content (Initially Hidden with Tailwind class) -->
         <div id="otherItemsContent" class="hidden mt-10">
             <header class="mb-10 text-center">
                  <div class="inline-flex items-center bg-white p-4 rounded-xl shadow-lg">
-                    <svg class="header-icon text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <!-- Changed icon color -->
+                    <svg class="header-icon text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1012 10.125A2.625 2.625 0 0012 4.875z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.125V21m0-10.875c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zM12 3v.001M12 21v-2.25m0 0c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z" /> <!-- Generic store/item icon -->
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.125V21m0-10.875c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zM12 3v.001M12 21v-2.25m0 0c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z" />
                     </svg>
                     <h1 class="text-4xl sm:text-5xl font-bold text-blue-700">Jelajahi Item Eksklusif!</h1>
                 </div>
                 <p class="text-white text-lg mt-4">Temukan Shekless, Buah Langka, dan Pet Unik Lainnya!</p>
             </header>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-10">
-                <!-- Sheklesss Card -->
                 <div class="item-category-card">
-                    <img src="coin.png" alt="Gambar Koin Sheklesss" class="mx-auto item-image" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Sheklesss'">
+                    <img src="coin.png" alt="Gambar Koin Sheklesss" class="mx-auto" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Sheklesss'">
                     <h3 class="text-2xl font-bold text-indigo-600 mb-2">Sheklesss</h3>
-                    <p class="text-gray-700 text-sm mb-4">Uang Grow a Garden Murah!!! untuk mempercantik kebunmu</p>
+                    <p class="text-gray-700 text-sm mb-4 flex-grow">Uang Grow a Garden Murah!!! untuk mempercantik kebunmu</p>
                     <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20item%20Sheklesss." target="_blank" class="buy-button-link bg-indigo-500 hover:bg-indigo-600">Info Detail</a>
                 </div>
-
-                <!-- Buah Limited Card -->
                 <div class="item-category-card">
-                    <img src="CandyBlossomPic.png" alt="Gambar Buah Limited Candy Blossom" class="mx-auto item-image" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Buah+Limited'">
+                    <img src="CandyBlossomPic.png" alt="Gambar Buah Limited Candy Blossom" class="mx-auto" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Buah+Limited'">
                     <h3 class="text-2xl font-bold text-red-600 mb-2">Buah Limited</h3>
-                    <p class="text-gray-700 text-sm mb-4">Dapatkan buah-buahan edisi terbatas dengan efek spesial!</p>
+                    <p class="text-gray-700 text-sm mb-4 flex-grow">Dapatkan buah-buahan edisi terbatas dengan efek spesial!</p>
                     <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Buah%20Limited." target="_blank" class="buy-button-link bg-red-500 hover:bg-red-600">Info Detail</a>
                 </div>
-
-                <!-- Pet Lainnya Card -->
                 <div class="item-category-card">
-                    <img src="titangolden.png" alt="Gambar Pet Titan Golden" class="mx-auto item-image" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Pet+Lainnya'">
+                    <img src="titangolden.png" alt="Gambar Pet Titan Golden" class="mx-auto" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Pet+Lainnya'">
                     <h3 class="text-2xl font-bold text-emerald-600 mb-2">Pet Lainnya</h3>
-                    <p class="text-gray-700 text-sm mb-4">Jelajahi koleksi pet unik lainnya seperti Titan Pet,Pet langka.</p>
-                    <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Pet%20Lainnya." target="_blank" class="buy-button-link bg-emerald-500 hover:bg-emerald-600">Info Detail</a>
+                    <p class="text-gray-700 text-sm mb-4 flex-grow">Jelajahi koleksi pet unik lainnya seperti Titan Pet, Pet langka.</p>
+                    <button id="showPetCategoriesButton" class="action-button-styled-as-link bg-emerald-500 hover:bg-emerald-600">Lihat Kategori Pet</button>
                 </div>
             </div>
-
             <div class="text-center mt-10">
                 <button id="backToPetSpecialsButton" class="action-button back-button">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2">
@@ -291,9 +295,311 @@
                     Kembali ke Promo Pet
                 </button>
             </div>
-        </div> <!-- End of otherItemsContent -->
+        </div>
 
-        <!-- Payment Methods Section -->
+        <div id="petCategoriesContent" class="hidden mt-10">
+            <header class="mb-10 text-center">
+                 <div class="inline-flex items-center bg-white p-4 rounded-xl shadow-lg">
+                    <svg class="header-icon text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 3h9.75m-9.75 3h9.75m0-13.5c0-1.12.394-2.154 1.073-2.995.678-.84 1.692-1.375 2.792-1.558M4.5 19.5A2.25 2.25 0 006.75 21.75h10.5A2.25 2.25 0 0019.5 19.5m0-13.5c0-1.12.394-2.154 1.073-2.995C21.25 5.115 22.264 4.58 23.364 4.4M4.5 19.5V6.75A2.25 2.25 0 016.75 4.5h10.5A2.25 2.25 0 0119.5 6.75v12.75m0-13.5C19.5 5.115 18.822 4.27 18.142 3.43C17.462 2.59 16.45 2.055 15.35 1.872" />
+                    </svg>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-purple-700">Kategori Pet</h1>
+                </div>
+                <p class="text-white text-lg mt-4">Pilih kategori pet yang kamu inginkan!</p>
+            </header>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-10">
+                <div class="item-category-card">
+                    <img src="https://placehold.co/100x100/f87171/ffffff?text=OP" alt="Pet OP" class="mx-auto" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Pet+OP'">
+                    <h3 class="text-xl font-bold text-red-500 mb-2">Pet OP</h3>
+                    <p class="text-gray-700 text-sm mb-4 flex-grow">Pet dengan kekuatan super, siap dominasi kebun!</p>
+                    <button id="showPetOpDetailsButton" class="action-button-styled-as-link bg-red-500 hover:bg-red-600">Lihat Detail</button>
+                </div>
+                <div class="item-category-card">
+                    <img src="https://placehold.co/100x100/60a5fa/ffffff?text=Titan" alt="Pet Titan" class="mx-auto" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Pet+Titan'">
+                    <h3 class="text-xl font-bold text-blue-500 mb-2">Pet Titan</h3>
+                    <p class="text-gray-700 text-sm mb-4 flex-grow">Pet raksasa legendaris dengan kemampuan unik.</p>
+                    <button id="showTitanPetDetailsButton" class="action-button-styled-as-link bg-blue-500 hover:bg-blue-600">Lihat Detail</button>
+                </div>
+                <div class="item-category-card">
+                    <img src="https://placehold.co/100x100/facc15/444444?text=Langka" alt="Pet Langka" class="mx-auto" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Pet+Langka'">
+                    <h3 class="text-xl font-bold text-yellow-500 mb-2">Pet Langka</h3>
+                    <p class="text-gray-700 text-sm mb-4 flex-grow">Koleksi pet langka yang sulit ditemukan, spesial untukmu!</p>
+                    <button id="showPetLangkaDetailsButton" class="action-button-styled-as-link bg-yellow-500 hover:bg-yellow-600">Lihat Detail</button>
+                </div>
+                <div class="item-category-card">
+                    <img src="https://placehold.co/100x100/a78bfa/ffffff?text=Level" alt="Pet Level" class="mx-auto" onerror="this.src='https://placehold.co/100x100/cccccc/444444?text=Pet+Level'">
+                    <h3 class="text-xl font-bold text-purple-500 mb-2">Pet Level</h3>
+                    <p class="text-gray-700 text-sm mb-4 flex-grow">Tingkatkan level petmu untuk kekuatan maksimal!</p>
+                    <button id="showPetLevelDetailsButton" class="action-button-styled-as-link bg-purple-500 hover:bg-purple-600">Lihat Detail</button>
+                </div>
+            </div>
+            <div class="text-center mt-10">
+                <button id="backToOtherItemsFromCategoriesButton" class="action-button back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Kembali ke Item Eksklusif
+                </button>
+            </div>
+        </div>
+
+        <div id="titanPetDetailsContent" class="hidden mt-10">
+            <header class="mb-10 text-center">
+                 <div class="inline-flex items-center bg-white p-4 rounded-xl shadow-lg">
+                    <svg class="header-icon text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+                    </svg>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-orange-600">Detail Pet Titan</h1>
+                </div>
+                <p class="text-white text-lg mt-4">Pilih Pet Titan favoritmu!</p>
+            </header>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-10"> <!-- Adjusted to allow more items -->
+                <div class="item-category-card">
+                    <img src="https://placehold.co/100x100/f59e0b/ffffff?text=Lab" alt="Golden Lab" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Golden+Lab'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-amber-600 mb-2">Golden Lab</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Titan Labrador Emas yang setia dan kuat.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 120.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Titan%20Pet%20Golden%20Lab." target="_blank" class="buy-button-link bg-amber-500 hover:bg-amber-600">Info Detail</a>
+                    </div>
+                </div>
+                <div class="item-category-card">
+                    <img src="https://placehold.co/100x100/78716c/ffffff?text=Mole" alt="Mole" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Mole'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-stone-600 mb-2">Mole</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Titan Tikus Tanah, penggali ulung di kebun.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 110.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Titan%20Pet%20Mole." target="_blank" class="buy-button-link bg-stone-500 hover:bg-stone-600">Info Detail</a>
+                    </div>
+                </div>
+                <div class="item-category-card">
+                    <img src="https://placehold.co/100x100/a3a3a3/ffffff?text=Dog" alt="Dog" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Dog'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-neutral-600 mb-2">Dog</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Titan Anjing pemberani, penjaga kebun handal.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 115.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Titan%20Pet%20Dog." target="_blank" class="buy-button-link bg-neutral-500 hover:bg-neutral-600">Info Detail</a>
+                    </div>
+                </div>
+                <div class="item-category-card">
+                    <img src="https://placehold.co/100x100/4ade80/ffffff?text=Frog" alt="Frog" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Frog'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-green-500 mb-2">Frog</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Titan Katak lincah, pembasmi hama alami.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 105.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Titan%20Pet%20Frog." target="_blank" class="buy-button-link bg-green-500 hover:bg-green-600">Info Detail</a>
+                    </div>
+                </div>
+                <div class="item-category-card"> <!-- Cow Card -->
+                    <img src="https://placehold.co/100x100/b7ada5/ffffff?text=Cow" alt="Cow" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Cow'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">Cow</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Titan Sapi perkasa, penghasil susu berkualitas.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 125.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Titan%20Pet%20Cow." target="_blank" class="buy-button-link bg-gray-500 hover:bg-gray-600">Info Detail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-10">
+                <button id="backToPetCategoriesFromDetailsButton" class="action-button back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Kembali ke Kategori Pet
+                </button>
+            </div>
+        </div>
+
+        <div id="petOpDetailsContent" class="hidden mt-10">
+            <header class="mb-10 text-center">
+                 <div class="inline-flex items-center bg-white p-4 rounded-xl shadow-lg">
+                    <svg class="header-icon text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 00-2.723 2.471A8.25 8.25 0 0115.362 5.214z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75H9.008v.008H9V12.75z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15a.75.75 0 01-.75-.75V12a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v2.25A.75.75 0 0112 15h-.008z" />
+                    </svg>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-red-600">Detail Pet OP</h1>
+                </div>
+                <p class="text-white text-lg mt-4">Pilih Pet OP andalanmu!</p>
+            </header>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-10"> <!-- Changed to 3 columns for Pet OP -->
+                <div class="pet-op-detail-card">
+                    <img src="image_a38bfb.png" alt="Gambar Pet Rakun" class="item-image" onerror="this.src='https://placehold.co/600x400/cccccc/444444?text=Gambar+Rakun+Tidak+Tersedia'">
+                    <div class="card-content-wrapper">
+                        <h2 class="text-2xl font-bold text-green-700 mb-2">Pet Raccoon (OP)</h2>
+                        <p class="text-gray-600 mb-4 text-sm flex-grow">Raccoon yang didapat ukuran dan levelnya random!! apabila ingin request umur dan berat, tanya terlebih dahulu!</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 80.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20untuk%20membeli%20Pet%20Raccoon%20(OP)%20(Rp%2080.000)%20dari%20Grow%20a%20Garden." target="_blank" class="buy-button-link">Beli Sekarang</a>
+                    </div>
+                </div>
+                <div class="pet-op-detail-card">
+                    <img src="image_a38c73.jpg" alt="Gambar Pet Capung" class="item-image" onerror="this.src='https://placehold.co/600x400/cccccc/444444?text=Gambar+Capung+Tidak+Tersedia'">
+                    <div class="card-content-wrapper">
+                        <h2 class="text-2xl font-bold text-green-700 mb-2">Pet Dragon Fly (OP)</h2>
+                        <p class="text-gray-600 mb-4 text-sm flex-grow">Dragon Fly yang didapat ukuran dan levelnya random!! apabila ingin request umur dan berat, tanya terlebih dahulu!</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 75.000</span>
+                        </div>
+                         <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20untuk%20membeli%20Pet%20Dragon%20Fly%20(OP)%20(Rp%2075.000)%20dari%20Grow%20a%20Garden." target="_blank" class="buy-button-link">Beli Sekarang</a>
+                    </div>
+                </div>
+                <!-- Queen Bee Card - New Addition -->
+                <div class="pet-op-detail-card">
+                    <img src="https://placehold.co/180x180/fcd34d/444444?text=Queen+Bee" alt="Queen Bee" class="item-image" onerror="this.src='https://placehold.co/600x400/cccccc/444444?text=Queen+Bee+Tidak+Tersedia'">
+                    <div class="card-content-wrapper">
+                        <h2 class="text-2xl font-bold text-yellow-500 mb-2">Queen Bee (OP)</h2>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Ratu Lebah perkasa, pemimpin koloni yang tak terkalahkan!</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 90.000</span>
+                        </div>
+                         <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20untuk%20membeli%20Queen%20Bee%20(OP)%20(Rp%2090.000)%20dari%20Grow%20a%20Garden." target="_blank" class="buy-button-link bg-yellow-500 hover:bg-yellow-600">Beli Sekarang</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-10">
+                <button id="backToPetCategoriesFromOpDetailsButton" class="action-button back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Kembali ke Kategori Pet
+                </button>
+            </div>
+        </div>
+
+        <div id="petLangkaDetailsContent" class="hidden mt-10">
+            <header class="mb-10 text-center">
+                 <div class="inline-flex items-center bg-white p-4 rounded-xl shadow-lg">
+                    <svg class="header-icon text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-yellow-600">Detail Pet Langka</h1>
+                </div>
+                <p class="text-white text-lg mt-4">Koleksi Pet Langka yang menawan!</p>
+            </header>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-10">
+                <div class="pet-langka-detail-card">
+                    <img src="https://placehold.co/180x180/fbbf24/ffffff?text=Red+Fox" alt="Red Fox" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Red+Fox'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-amber-700 mb-2">Red Fox</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Rubah merah yang cerdik dan gesit.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 95.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Pet%20Langka%20Red%20Fox." target="_blank" class="buy-button-link bg-amber-600 hover:bg-amber-700">Info Detail</a>
+                    </div>
+                </div>
+                <div class="pet-langka-detail-card">
+                    <img src="https://placehold.co/180x180/84cc16/ffffff?text=Mantis" alt="Mantis" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Mantis'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-lime-600 mb-2">Mantis</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Belalang sembah, pemburu yang anggun.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 90.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Pet%20Langka%20Mantis." target="_blank" class="buy-button-link bg-lime-500 hover:bg-lime-600">Info Detail</a>
+                    </div>
+                </div>
+                <div class="pet-langka-detail-card">
+                    <img src="https://placehold.co/180x180/f472b6/ffffff?text=Petal+Bee" alt="Petal Bee" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Petal+Bee'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-pink-500 mb-2">Petal Bee</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Lebah kelopak, pembawa serbuk sari ajaib.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 100.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Pet%20Langka%20Petal%20Bee." target="_blank" class="buy-button-link bg-pink-500 hover:bg-pink-600">Info Detail</a>
+                    </div>
+                </div>
+                <div class="pet-langka-detail-card">
+                    <img src="https://placehold.co/180x180/fcd34d/444444?text=Honey+Bee" alt="Honey Bee" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Honey+Bee'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-yellow-500 mb-2">Honey Bee</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Lebah madu, penghasil madu berkualitas.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 85.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20Pet%20Langka%20Honey%20Bee." target="_blank" class="buy-button-link bg-yellow-500 hover:bg-yellow-600">Info Detail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-10">
+                <button id="backToPetCategoriesFromLangkaDetailsButton" class="action-button back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Kembali ke Kategori Pet
+                </button>
+            </div>
+        </div>
+
+        <div id="petLevelDetailsContent" class="hidden mt-10">
+            <header class="mb-10 text-center">
+                 <div class="inline-flex items-center bg-white p-4 rounded-xl shadow-lg">
+                    <svg class="header-icon text-cyan-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+                    </svg>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-cyan-600">Detail Pet Level</h1>
+                </div>
+                <p class="text-white text-lg mt-4">Pilih level pet yang diinginkan!</p>
+            </header>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-10">
+                <div class="pet-level-detail-card">
+                    <img src="https://placehold.co/180x180/22d3ee/ffffff?text=Level+20" alt="Pet Level 20" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Level+20'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-cyan-700 mb-2">Pet Level 20</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Tingkatkan pet pilihanmu ke level 20.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 50.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20jasa%20Pet%20Level%2020." target="_blank" class="buy-button-link bg-cyan-500 hover:bg-cyan-600">Info Detail</a>
+                    </div>
+                </div>
+                <div class="pet-level-detail-card">
+                    <img src="https://placehold.co/180x180/06b6d4/ffffff?text=Level+30" alt="Pet Level 30" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Level+30'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-cyan-700 mb-2">Pet Level 30</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Capai potensi lebih tinggi dengan level 30.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 70.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20jasa%20Pet%20Level%2030." target="_blank" class="buy-button-link bg-cyan-500 hover:bg-cyan-600">Info Detail</a>
+                    </div>
+                </div>
+                <div class="pet-level-detail-card">
+                    <img src="https://placehold.co/180x180/0891b2/ffffff?text=Level+35" alt="Pet Level 35" class="item-image" onerror="this.src='https://placehold.co/180x180/cccccc/444444?text=Level+35'">
+                    <div class="card-content-wrapper">
+                        <h3 class="text-xl font-bold text-cyan-700 mb-2">Pet Level 35</h3>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Maksimalkan kekuatan pet dengan level 35.</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="price-tag">Rp 85.000</span>
+                        </div>
+                        <a href="https://wa.me/6281318671975?text=Halo%2C%20saya%20tertarik%20dengan%20jasa%20Pet%20Level%2035." target="_blank" class="buy-button-link bg-cyan-500 hover:bg-cyan-600">Info Detail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-10">
+                <button id="backToPetCategoriesFromLevelDetailsButton" class="action-button back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Kembali ke Kategori Pet
+                </button>
+            </div>
+        </div>
+
+
         <section class="payment-methods-section">
             <h3>Metode Pembayaran</h3>
             <ul class="payment-methods-list">
@@ -306,8 +612,6 @@
                 <li>OVO</li>
             </ul>
         </section>
-
-        <!-- Footer -->
         <footer class="mt-12 text-center">
             <p class="text-white text-sm">&copy; 2025 Grow a Garden - Semua Hak Cipta Dilindungi.</p>
         </footer>
@@ -317,42 +621,85 @@
         document.addEventListener('DOMContentLoaded', () => {
             const petSpecialsContent = document.getElementById('petSpecialsContent');
             const otherItemsContent = document.getElementById('otherItemsContent');
+            const petCategoriesContent = document.getElementById('petCategoriesContent');
+            const titanPetDetailsContent = document.getElementById('titanPetDetailsContent');
+            const petOpDetailsContent = document.getElementById('petOpDetailsContent');
+            const petLangkaDetailsContent = document.getElementById('petLangkaDetailsContent');
+            const petLevelDetailsContent = document.getElementById('petLevelDetailsContent');
+
             const showOtherItemsButton = document.getElementById('showOtherItemsButton');
             const backToPetSpecialsButton = document.getElementById('backToPetSpecialsButton');
+            const showPetCategoriesButton = document.getElementById('showPetCategoriesButton');
+            const backToOtherItemsFromCategoriesButton = document.getElementById('backToOtherItemsFromCategoriesButton');
+            const showTitanPetDetailsButton = document.getElementById('showTitanPetDetailsButton');
+            const backToPetCategoriesFromDetailsButton = document.getElementById('backToPetCategoriesFromDetailsButton');
+            const showPetOpDetailsButton = document.getElementById('showPetOpDetailsButton');
+            const backToPetCategoriesFromOpDetailsButton = document.getElementById('backToPetCategoriesFromOpDetailsButton');
+            const showPetLangkaDetailsButton = document.getElementById('showPetLangkaDetailsButton');
+            const backToPetCategoriesFromLangkaDetailsButton = document.getElementById('backToPetCategoriesFromLangkaDetailsButton');
+            const showPetLevelDetailsButton = document.getElementById('showPetLevelDetailsButton');
+            const backToPetCategoriesFromLevelDetailsButton = document.getElementById('backToPetCategoriesFromLevelDetailsButton');
 
-            // Function to handle image errors
+            const allViews = [petSpecialsContent, otherItemsContent, petCategoriesContent, titanPetDetailsContent, petOpDetailsContent, petLangkaDetailsContent, petLevelDetailsContent];
+
+            const showView = (viewToShow) => {
+                allViews.forEach(view => {
+                    if (view && view !== viewToShow) {
+                        view.classList.add('hidden');
+                    }
+                });
+                if (viewToShow) {
+                    viewToShow.classList.remove('hidden');
+                }
+                window.scrollTo(0, 0);
+            };
+
             const handleImageError = (img) => {
                 console.error('Image failed to load:', img.src);
                 if (!img.src.startsWith('https://placehold.co')) {
-                    // Fallback logic can be added here if needed
+                    // Fallback logic
                 }
             };
 
-            document.querySelectorAll('.item-image, .bundle-item-image').forEach(img => {
+            document.querySelectorAll('.item-image, .bundle-item-image, .item-category-card img, .pet-op-detail-card img, .pet-langka-detail-card img, .pet-level-detail-card img').forEach(img => {
                 img.addEventListener('error', function() { handleImageError(this); });
             });
-            document.querySelectorAll('#otherItemsContent .item-image').forEach(img => {
-                img.addEventListener('error', function() { handleImageError(this); });
-            });
-
-            // Ensure correct initial visibility
-            // petSpecialsContent should be visible by default (no 'hidden' class in HTML)
-            // otherItemsContent should be hidden by default (has 'hidden' class in HTML)
 
             if (showOtherItemsButton) {
-                showOtherItemsButton.addEventListener('click', () => {
-                    if (petSpecialsContent) petSpecialsContent.classList.add('hidden');
-                    if (otherItemsContent) otherItemsContent.classList.remove('hidden');
-                    window.scrollTo(0, 0); // Scroll to top
-                });
+                showOtherItemsButton.addEventListener('click', () => showView(otherItemsContent));
             }
-
             if (backToPetSpecialsButton) {
-                backToPetSpecialsButton.addEventListener('click', () => {
-                    if (otherItemsContent) otherItemsContent.classList.add('hidden');
-                    if (petSpecialsContent) petSpecialsContent.classList.remove('hidden');
-                    window.scrollTo(0, 0); // Scroll to top
-                });
+                backToPetSpecialsButton.addEventListener('click', () => showView(petSpecialsContent));
+            }
+            if (showPetCategoriesButton) {
+                showPetCategoriesButton.addEventListener('click', () => showView(petCategoriesContent));
+            }
+            if (backToOtherItemsFromCategoriesButton) {
+                backToOtherItemsFromCategoriesButton.addEventListener('click', () => showView(otherItemsContent));
+            }
+            if (showTitanPetDetailsButton) {
+                showTitanPetDetailsButton.addEventListener('click', () => showView(titanPetDetailsContent));
+            }
+            if (backToPetCategoriesFromDetailsButton) {
+                backToPetCategoriesFromDetailsButton.addEventListener('click', () => showView(petCategoriesContent));
+            }
+            if (showPetOpDetailsButton) {
+                showPetOpDetailsButton.addEventListener('click', () => showView(petOpDetailsContent));
+            }
+            if (backToPetCategoriesFromOpDetailsButton) {
+                backToPetCategoriesFromOpDetailsButton.addEventListener('click', () => showView(petCategoriesContent));
+            }
+            if (showPetLangkaDetailsButton) {
+                showPetLangkaDetailsButton.addEventListener('click', () => showView(petLangkaDetailsContent));
+            }
+            if (backToPetCategoriesFromLangkaDetailsButton) {
+                backToPetCategoriesFromLangkaDetailsButton.addEventListener('click', () => showView(petCategoriesContent));
+            }
+            if (showPetLevelDetailsButton) {
+                showPetLevelDetailsButton.addEventListener('click', () => showView(petLevelDetailsContent));
+            }
+            if (backToPetCategoriesFromLevelDetailsButton) {
+                backToPetCategoriesFromLevelDetailsButton.addEventListener('click', () => showView(petCategoriesContent));
             }
         });
     </script>
