@@ -183,6 +183,109 @@
             font-weight: 500;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
+
+        /* Testimonial Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280; /* Gray-500 */
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-close-button:hover {
+            color: #1f2937; /* Gray-800 */
+        }
+        .modal-title {
+            font-size: 1.75rem; /* text-2xl */
+            font-weight: 700;
+            color: #166534; /* Green-800 */
+            margin-bottom: 1rem;
+        }
+        .modal-text {
+            font-size: 1rem; /* text-base */
+            color: #4b5563; /* Gray-600 */
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .modal-button {
+            display: inline-block;
+            background-color: #fb923c; /* Orange-400 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .modal-button:hover {
+            background-color: #f97316; /* Orange-500 */
+        }
+
+        /* Minimized Testimonial Widget Styles */
+        #minimizedTestimonialWidget {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            background-color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            z-index: 50;
+            max-width: 250px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        #minimizedTestimonialText {
+            transition: opacity 0.3s ease; /* For text fade */
+            font-size: 0.875rem; /* text-sm */
+            color: #374151; /* Gray-700 */
+            margin-bottom: 0.25rem;
+        }
+        #minimizedTestimonialWidget .widget-link-text {
+            font-size: 0.75rem; /* text-xs */
+            color: #3b82f6; /* Blue-500 */
+        }
+        #minimizedTestimonialWidget .widget-link-text:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body class="gradient-background min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
@@ -448,7 +551,7 @@
                     <img src="image_a38c73.jpg" alt="Gambar Pet Capung" class="item-image" onerror="this.src='https://placehold.co/600x400/cccccc/444444?text=Gambar+Capung+Tidak+Tersedia'">
                     <div class="card-content-wrapper">
                         <h2 class="text-2xl font-bold text-green-700 mb-2">Pet Dragon Fly (OP)</h2>
-                        <p class="text-gray-600 mb-4 text-sm flex-grow">Dragon Fly yang didapat ukuran dan levelnya random!! apabila ingin request umur dan berat, tanya terlebih dahulu!</p>
+                        <p class="text-gray-700 text-sm mb-4 flex-grow">Dragon Fly yang didapat ukuran dan levelnya random!! apabila ingin request umur dan berat, tanya terlebih dahulu!</p>
                         <div class="flex items-center justify-between mb-4">
                             <span class="price-tag">Rp 70.000</span>
                         </div>
@@ -599,6 +702,24 @@
             </div>
         </div>
 
+        <!-- Testimonial Modal -->
+        <div id="testimonialModal" class="modal-overlay">
+            <div class="modal-content">
+                <button id="closeTestimonialModal" class="modal-close-button">&times;</button>
+                <h2 class="modal-title">Kepuasan Pelanggan Adalah Prioritas Kami!</h2>
+                <p class="modal-text">
+                    Penasaran dengan pengalaman pelanggan lain? Lihat kumpulan testimoni kami untuk melihat mengapa mereka mempercayai Truefa GrowGarden!
+                </p>
+                <a href="https://drive.google.com/drive/folders/11UXsgFPRmN2xM4kMzMqttz6x7O-ZcFq7?usp=drive_link" target="_blank" class="modal-button">Lihat Testimoni Sekarang!</a>
+            </div>
+        </div>
+
+        <!-- Minimized Testimonial Widget -->
+        <div id="minimizedTestimonialWidget" class="fixed bottom-4 left-4 bg-white p-3 rounded-lg shadow-xl cursor-pointer hidden z-50" onclick="window.open('https://drive.google.com/drive/folders/11UXsgFPRmN2xM4kMzMqttz6x7O-ZcFq7?usp=drive_link', '_blank')">
+            <p id="minimizedTestimonialText" class="text-sm text-gray-700"></p>
+            <span class="widget-link-text block mt-1">Lihat Semua Testimoni &rarr;</span>
+        </div>
+
 
         <section class="payment-methods-section">
             <h3>Metode Pembayaran</h3>
@@ -640,16 +761,64 @@
             const showPetLevelDetailsButton = document.getElementById('showPetLevelDetailsButton');
             const backToPetCategoriesFromLevelDetailsButton = document.getElementById('backToPetCategoriesFromLevelDetailsButton');
 
+            const testimonialModal = document.getElementById('testimonialModal');
+            const closeTestimonialModal = document.getElementById('closeTestimonialModal');
+            const minimizedTestimonialWidget = document.getElementById('minimizedTestimonialWidget');
+            const minimizedTestimonialText = document.getElementById('minimizedTestimonialText');
+            const testimonialPopupShownKey = 'testimonialPopupShown_v1'; // Changed key to reset for users
+
+
             const allViews = [petSpecialsContent, otherItemsContent, petCategoriesContent, titanPetDetailsContent, petOpDetailsContent, petLangkaDetailsContent, petLevelDetailsContent];
+            const currentViewKey = 'growAGardenCurrentView_v1'; // Changed key to reset for users
+
+            const testiSnippets = [
+                "Pelayanan cepat, item aman! 👍",
+                "Harga paling murah se-Grow a Garden! �",
+                "Akhirnya kebun jadi estetik! ✨",
+                "Recommended seller! Pasti order lagi! ⭐⭐⭐⭐⭐"
+            ];
+            let currentSnippetIndex = 0;
+            let testimonialInterval;
+
+            function updateTestimonialSnippet() {
+                if (minimizedTestimonialText && minimizedTestimonialWidget && !minimizedTestimonialWidget.classList.contains('hidden')) {
+                    minimizedTestimonialText.style.opacity = 0;
+                    setTimeout(() => {
+                        currentSnippetIndex = (currentSnippetIndex + 1) % testiSnippets.length;
+                        minimizedTestimonialText.textContent = testiSnippets[currentSnippetIndex];
+                        minimizedTestimonialText.style.opacity = 1;
+                    }, 300);
+                }
+            }
+
+            function startMinimizedSlideshow() {
+                if (minimizedTestimonialWidget && minimizedTestimonialText) {
+                    minimizedTestimonialWidget.classList.remove('hidden');
+                    updateTestimonialSnippet(); // Show first snippet immediately
+                    if (testimonialInterval) clearInterval(testimonialInterval); // Clear existing interval if any
+                    testimonialInterval = setInterval(updateTestimonialSnippet, 5000); // Change every 5 seconds
+                }
+            }
+
+            function stopMinimizedSlideshow() {
+                 if (testimonialInterval) clearInterval(testimonialInterval);
+            }
+
 
             const showView = (viewToShow) => {
+                let viewIdToShow = null;
                 allViews.forEach(view => {
-                    if (view && view !== viewToShow) {
-                        view.classList.add('hidden');
+                    if (view) {
+                        if (view === viewToShow) {
+                            view.classList.remove('hidden');
+                            viewIdToShow = view.id;
+                        } else {
+                            view.classList.add('hidden');
+                        }
                     }
                 });
-                if (viewToShow) {
-                    viewToShow.classList.remove('hidden');
+                if (viewIdToShow) {
+                    localStorage.setItem(currentViewKey, viewIdToShow);
                 }
                 window.scrollTo(0, 0);
             };
@@ -664,6 +833,20 @@
             document.querySelectorAll('.item-image, .bundle-item-image, .item-category-card img, .pet-op-detail-card img, .pet-langka-detail-card img, .pet-level-detail-card img').forEach(img => {
                 img.addEventListener('error', function() { handleImageError(this); });
             });
+
+            // Restore last view or show default
+            const lastViewId = localStorage.getItem(currentViewKey);
+            let initialView = petSpecialsContent;
+            if (lastViewId) {
+                const lastViewElement = document.getElementById(lastViewId);
+                if (lastViewElement && allViews.includes(lastViewElement)) {
+                    initialView = lastViewElement;
+                } else {
+                    localStorage.removeItem(currentViewKey);
+                }
+            }
+            showView(initialView);
+
 
             if (showOtherItemsButton) {
                 showOtherItemsButton.addEventListener('click', () => showView(otherItemsContent));
@@ -701,8 +884,38 @@
             if (backToPetCategoriesFromLevelDetailsButton) {
                 backToPetCategoriesFromLevelDetailsButton.addEventListener('click', () => showView(petCategoriesContent));
             }
+
+            // Testimonial Modal and Minimized Widget Logic
+            if (testimonialModal && closeTestimonialModal && minimizedTestimonialWidget) {
+                if (!localStorage.getItem(testimonialPopupShownKey)) {
+                    setTimeout(() => {
+                        testimonialModal.classList.add('active');
+                        minimizedTestimonialWidget.classList.add('hidden'); // Ensure minimized is hidden when big modal shows
+                        stopMinimizedSlideshow();
+                    }, 500);
+                } else {
+                    // If main modal was already shown and closed, show minimized widget directly
+                    testimonialModal.classList.remove('active');
+                    startMinimizedSlideshow();
+                }
+
+                closeTestimonialModal.addEventListener('click', () => {
+                    testimonialModal.classList.remove('active');
+                    localStorage.setItem(testimonialPopupShownKey, 'true');
+                    startMinimizedSlideshow();
+                });
+
+                testimonialModal.addEventListener('click', (event) => {
+                    if (event.target === testimonialModal) {
+                        testimonialModal.classList.remove('active');
+                        localStorage.setItem(testimonialPopupShownKey, 'true');
+                        startMinimizedSlideshow();
+                    }
+                });
+            }
         });
     </script>
 
 </body>
 </html>
+�
